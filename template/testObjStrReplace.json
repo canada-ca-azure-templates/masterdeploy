@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {
+        "testObjectReplace": {
+            "something": "servername",
+            "somearray": [
+                "start",
+                "start2"
+            ]
+        }
+    },
+    "resources": [ ],
+    "outputs": {
+        "testObjectReplace": {
+            "type": "object",
+            "value": "[json(replace(string(variables(parameters('vmObj'))), parameters('vmObj').vm.computerName, concat(parameters('vmObj').vm.computerName, parameters('vmIndex'))))]"
+        }
+    }
+}
