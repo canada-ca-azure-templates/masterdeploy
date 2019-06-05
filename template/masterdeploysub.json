@@ -45,7 +45,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "location": "[parameters('deploymentSubArray')[copyIndex()].location]",
-            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('startName')))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(concat('\"', variables('startName'), '\"')))]"],
             "copy": {
                 "name": "obj",
                 "count": "[length(parameters('deploymentSubArray'))]"
