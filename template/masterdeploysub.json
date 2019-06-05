@@ -16,14 +16,20 @@
         },
         "deploymentSubArray": {
             "type": "array"
+        },
+        "guidValue": {
+            "type": "string",
+            "defaultValue": "[newGuid()]"
         }
     },
     "variables": {
-    },
+        "startName": "[concat('start-', parameters('guidValue'))]",
+        "jsonStartName": "[concat('\"', variables('startName'), '\"')]"
+     },
     "resources": [
         {
             "apiVersion": "2018-05-01",
-            "name": "start",
+            "name": "[variables('startName')]",
             "type": "Microsoft.Resources/deployments",
             "location": "canadacentral",
             "properties": {
@@ -40,7 +46,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "location": "[parameters('deploymentSubArray')[copyIndex()].location]",
-            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json('\"start\"'))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
             "copy": {
                 "name": "obj",
                 "count": "[length(parameters('deploymentSubArray'))]"
