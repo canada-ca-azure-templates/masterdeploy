@@ -23,7 +23,8 @@
         }
     },
     "variables": {
-        "startName": "[concat('start-', parameters('guidValue'))]"
+        "startName": "[concat('start-', parameters('guidValue'))]",
+        "jsonStartName": "[concat('\"', variables('startName'), '\"')]"
      },
     "resources": [
         {
@@ -45,7 +46,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "location": "[parameters('deploymentSubArray')[copyIndex()].location]",
-            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(concat('\"', variables('startName'), '\"')))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
             "copy": {
                 "name": "obj",
                 "count": "[length(parameters('deploymentSubArray'))]"
