@@ -19,9 +19,16 @@
         },
         "deploymentRGArray": {
             "type": "array"
+        },
+        "guidValue": {
+            "type": "string",
+            "defaultValue": "[newGuid()]"
         }
     },
-    "variables": {},
+    "variables": {
+        "startName": "[concat('start-', parameters('guidValue'))]",
+        "jsonStartName": "[concat('\"', variables('startName'), '\"')]"
+    },
     "resources": [
         {
             "apiVersion": "2018-05-01",
@@ -42,7 +49,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "location": "[parameters('deploymentSubArray')[copyIndex()].location]",
-            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json('\"start\"'))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentSubArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentSubArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
             "copy": {
                 "name": "objSub",
                 "count": "[length(parameters('deploymentSubArray'))]"
@@ -64,7 +71,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "resourceGroup": "[parameters('deploymentRGArray')[copyIndex()].resourceGroup]",
-            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json('\"start\"'))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
             "copy": {
                 "name": "objRG",
                 "count": "[length(parameters('deploymentRGArray'))]"

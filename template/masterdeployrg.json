@@ -16,9 +16,15 @@
         },
         "deploymentRGArray": {
             "type": "array"
+        },
+        "guidValue": {
+            "type": "string",
+            "defaultValue": "[newGuid()]"
         }
     },
     "variables": {
+        "startName": "[concat('start-', parameters('guidValue'))]",
+        "jsonStartName": "[concat('\"', variables('startName'), '\"')]"
     },
     "resources": [
         {
@@ -40,7 +46,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "resourceGroup": "[parameters('deploymentRGArray')[copyIndex()].resourceGroup]",
-            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json('\"start\"'))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
             "copy": {
                 "name": "obj",
                 "count": "[length(parameters('deploymentRGArray'))]"
