@@ -19,7 +19,7 @@
         },
         "guidValue": {
             "type": "string",
-            "defaultValue": "[newGuid()]"
+            "defaultValue": "[guid(deployment().name)]"
         }
     },
     "variables": {
