@@ -27,12 +27,26 @@
         "jsonStartName": "[concat('\"', variables('startName'), '\"')]"
     },
     "resources": [
-       {
+        {
+            "apiVersion": "2018-05-01",
+            "name": "[variables('startName')]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[parameters('deploymentRGArray')[0].resourceGroup]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        {
             "name": "[parameters('deploymentRGArray')[copyIndex()].name]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "resourceGroup": "[parameters('deploymentRGArray')[copyIndex()].resourceGroup]",
-            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), '')]"],
+            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
             "copy": {
                 "name": "obj",
                 "count": "[length(parameters('deploymentRGArray'))]"
