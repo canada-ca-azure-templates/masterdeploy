@@ -27,12 +27,12 @@
         "jsonStartName": "[concat('\"', variables('startName'), '\"')]"
     },
     "resources": [
-        {
+       {
             "name": "[parameters('deploymentRGArray')[copyIndex()].name]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-05-01",
             "resourceGroup": "[parameters('deploymentRGArray')[copyIndex()].resourceGroup]",
-            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json(variables('jsonStartName')))]"],
+            "dependsOn": ["[if(contains(parameters('deploymentRGArray')[copyIndex()], 'dependsOn'), json(replace(replace(string(parameters('deploymentRGArray')[copyIndex()].dependsOn), '[', ''), ']', '')), json('null'))]"],
             "copy": {
                 "name": "obj",
                 "count": "[length(parameters('deploymentRGArray'))]"
